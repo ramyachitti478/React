@@ -3,7 +3,7 @@ import "./Register.css";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-export default function Register() {
+export default function Register() { //Review
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");

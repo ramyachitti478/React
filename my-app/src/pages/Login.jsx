@@ -3,7 +3,7 @@ import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-export default function Login() {
+export default function Login() { //review
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();

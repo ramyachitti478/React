@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./Home.css";
 import { AuthContext } from "../context/AuthContext";
 
-export default function Home() {
+export default function Home() { //review
   const [posts, setPosts] = useState([]);
   const [search, setSearch] = useState("");
   const user = useContext(AuthContext);
