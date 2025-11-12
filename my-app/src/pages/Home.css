@@ -1,0 +1,34 @@
+.all-posts-search-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.all-posts-heading {
+    text-align: center;
+}
+
+.search-posts {
+    align-self: flex-end;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.all-posts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-details {
+    border: 1px solid;
+    width: 450px;
+    height: 250px;
+    padding: 9px;
+    margin: 15px 10px 15px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
