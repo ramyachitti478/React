@@ -1,0 +1,12 @@
+.post-creation-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+}
+
+.create-new-post-div {
+    max-width: 600px;
+    margin: 40px auto;
+    text-align: center;
+}

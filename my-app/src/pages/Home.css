@@ -7,11 +7,26 @@
     text-align: center;
 }
 
+.all-post-creation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+}
+
 .search-posts {
     align-self: flex-end;
-    padding: 10px;
+    margin: 0px 20px;
+    padding: 10px 20px;
     border: 1px solid #ccc;
     border-radius: 6px;
+}
+
+.heading-logout-section {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .all-posts {
@@ -19,16 +34,36 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    padding: 0px 10px;
 }
 
 .post-details {
     border: 1px solid;
     width: 450px;
-    height: 250px;
+    height: 300px;
     padding: 9px;
     margin: 15px 10px 15px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
+}
+
+.post-title, .post-body {
+    margin: 0;
+}
+
+button.logout {
+    width: auto;
+}
+
+.edit-delete-posts-section  {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-self: flex-end;
+}
+
+button.editPost, button.deletePost, button.editPost:hover, button.deletePost:hover {
+    background-color: unset;
 }
