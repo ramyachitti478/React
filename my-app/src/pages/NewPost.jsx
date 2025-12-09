@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./NewPost.css";
 import MESSAGES from "../constants/MESSAGES";
 
@@ -40,16 +40,19 @@ export default function NewPost() {
   };
 
   return (
-    <div className="create-new-post-div">
-      <h2>Create a New Post</h2>
+    <div className="create-post-container">
+      <Link to="/" className="post-details-backBtn">Back</Link>
+      <div className="create-new-post-div">
+        <h2>Create a New Post</h2>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <form onSubmit={handleSubmit} className="post-creation-form">
-        <input type="text" name="post-title" placeholder="Post Title" value={title} onChange={(e) => setTitle(e.target.value)}/>
-        <textarea name="post-body" placeholder="Write your post here..." value={body} onChange={(e) => setBody(e.target.value)} rows="6"></textarea>
-        <button type="submit">Publish Post</button>
-      </form>
+        <form onSubmit={handleSubmit} className="post-creation-form">
+          <input type="text" name="post-title" placeholder="Post Title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+          <textarea name="post-body" placeholder="Write your post here..." value={body} onChange={(e) => setBody(e.target.value)} rows="6"></textarea>
+          <button type="submit">Publish Post</button>
+        </form>
+      </div>
     </div>
   );
 }

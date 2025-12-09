@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect} from "react";
 // import { AuthContext } from "../context/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import "./NewPost.css";
 import MESSAGES from "../constants/MESSAGES";
 
@@ -43,16 +43,19 @@ useEffect(() => {
   };
 
   return (
-    <div className="create-new-post-div">
-      <h2>Update Post</h2>
+    <div className="create-post-container">
+      <Link to="/" className="post-details-backBtn">Back</Link>
+      <div className="create-new-post-div">
+        <h2>Update Post</h2>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <form onSubmit={handleUpdate} className="post-creation-form">
-        <input type="text" name="post-title" placeholder="Post Title" value={title} onChange={(e) => setTitle(e.target.value)}/>
-        <textarea name="post-body" placeholder="Write your post here..." value={body} onChange={(e) => setBody(e.target.value)} rows="6"></textarea>
-        <button type="submit">Update Post</button>
-      </form>
+        <form onSubmit={handleUpdate} className="post-creation-form">
+          <input type="text" name="post-title" placeholder="Post Title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+          <textarea name="post-body" placeholder="Write your post here..." value={body} onChange={(e) => setBody(e.target.value)} rows="6"></textarea>
+          <button type="submit">Update Post</button>
+        </form>
+      </div>
     </div>
   );
 }

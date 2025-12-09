@@ -1,3 +1,7 @@
+.create-post-container {
+    margin: 10px;
+}
+
 .post-creation-form {
     display: flex;
     flex-direction: column;

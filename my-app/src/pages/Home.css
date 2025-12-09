@@ -1,10 +1,30 @@
 .all-posts-search-section {
     display: flex;
     flex-direction: column;
+    gap: 20px;
+    padding-bottom: 40px;
 }
 
-.all-posts-heading {
-    text-align: center;
+.heading-logout-section {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fafafa;
+    border-bottom: 1px solid #eee;
+}
+
+button.logout {
+    padding: 8px 16px;
+    background: #ff4c4c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button.logout:hover {
+    background: #e04343;
 }
 
 .all-post-creation {
@@ -14,56 +34,138 @@
     padding: 0px 20px;
 }
 
+.all-posts-heading {
+    margin: 0;
+}
+
+/*  Search + Sort  */
+.search-sort-container {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+}
 .search-posts {
-    align-self: flex-end;
-    margin: 0px 20px;
+    margin-left: auto;
     padding: 10px 20px;
     border: 1px solid #ccc;
     border-radius: 6px;
+    width: 250px;
 }
 
-.heading-logout-section {
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.all-posts-search-section select {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
 }
 
 .all-posts {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0px 10px;
+    gap: 20px;
+    justify-content: center;
+    padding: 10px 20px;
 }
 
+/* Individual Post Card */
 .post-details {
-    border: 1px solid;
-    width: 450px;
-    height: 300px;
-    padding: 9px;
-    margin: 15px 10px 15px 10px;
+    border: 1px solid #ddd;
+    background: white;
+    width: 380px;
+    height: auto;
+    min-height: 260px;
+    padding: 16px;
+    margin-bottom: 10px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: space-evenly;
-}
-
-.post-title, .post-body {
-    margin: 0;
-}
-
-button.logout {
-    width: auto;
-}
-
-.edit-delete-posts-section  {
-    display: flex;
     align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 12px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-details:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 6px 16px rgba(0,0,0,0.1);
+}
+
+/*Title & Body*/
+.post-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.post-description {
+    margin: 0;
+    text-align: center;
+    line-height: 1.5;
+    color: #444;
+    overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 3;
+   -webkit-box-orient: vertical;
+}
+
+.post-details small {
+    color: #666;
+}
+
+/* Edit / Delete */
+.edit-delete-posts-section {
+    display: flex;
+    gap: 10px;
     align-self: flex-end;
 }
 
-button.editPost, button.deletePost, button.editPost:hover, button.deletePost:hover {
-    background-color: unset;
+button.editPost, 
+button.deletePost {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: 0.2s;
+}
+
+button.editPost:hover {
+    /* background: #e0f0ff; */
+    background: unset;
+}
+
+button.deletePost:hover {
+    /* background: #ffe0e0; */
+    background: unset;
+}
+
+/* Section Headings  */
+.section-heading {
+    width: 100%;
+    font-size: 22px;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    text-align: left;
+    padding-left: 20px;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .post-details {
+        width: 100%;
+    }
+
+    .all-post-creation {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .search-posts {
+        width: 100%;
+        margin: 0;
+    }
 }

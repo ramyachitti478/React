@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 import PostDetails from "./pages/PostDetails";
 import NewPost from "./pages/NewPost";
 import EditPost from "./pages/EditPost";
+import Author from "./pages/Author";
 import "./App.css";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/post/:id" element={<PostDetails />} />
         <Route path="/post/new" element={<NewPost />} />
         <Route path="/post/edit/:id" element={<EditPost />} />
+        <Route path="/post/author/:id" element={<Author />} />
       </Routes>
     </BrowserRouter>
   );

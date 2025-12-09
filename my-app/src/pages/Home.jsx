@@ -7,79 +7,118 @@ import MESSAGES from "../constants/MESSAGES";
 import APICALLS from "../constants/APICALLS";
 
 export default function Home() {
-  const [posts, setPosts] = useState([]);
+  const [apiPosts, setApiPosts] = useState([]);
+  const [localPosts, setLocalPosts] = useState([]);
   const [search, setSearch] = useState("");
-  const {user, logout} = useContext(AuthContext);
+  const [sort, setSort] = useState("latest"); 
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [storedPosts, setstoredPosts] = useState(JSON.parse(localStorage.getItem("posts")) || []);
 
+  // API posts
   useEffect(() => {
-    console.log("in")
     axios.get(APICALLS.JSON_POSTS_API)
-      .then(res => setPosts(res.data))
+      .then(res => setApiPosts(res.data || []))
+      .catch(() => setApiPosts([]));
   }, []);
 
-  const filteredPosts = posts.filter(post =>
-    post.title.toLowerCase().includes(search.toLowerCase()) ||
-    post.body.toLowerCase().includes(search.toLowerCase())
-  );
+  // local posts
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("posts")) || [];
+    setLocalPosts(stored);
+  }, []);
+
+  // delete
+  const handleDeleteLocal = (id) => {
+    if (!confirm(MESSAGES.POST_DELETE_CONFIRM)) return;
+    const updated = localPosts.filter(p => p.id !== id);
+    setLocalPosts(updated);
+    localStorage.setItem("posts", JSON.stringify(updated));
+    alert(MESSAGES.POST_DELETED);
+  };
 
   const handleLogout = () => {
     logout();           
     navigate("/login"); 
   };
 
-  const handleDeletePost = (id) => {
-    if (!confirm(MESSAGES.POST_DELETE_CONFIRM)) return;
-    const filteredStoredPosts = storedPosts.filter(post => post.id !== id)
-    setstoredPosts(filteredStoredPosts);    
-    localStorage.setItem("posts", JSON.stringify(filteredStoredPosts));
-  }
+  const match = (post, authorName = "") => {
+    const q = search.trim().toLowerCase();
+    if (!q) return true;
+    return (post.title + " " + post.body + " " + authorName).toLowerCase().includes(q);
+  };
+
+  // sort posts
+  const sortPosts = (arr, byDateKey = "date") => {
+    return [...arr].sort((a, b) => {
+      const aDate = a[byDateKey] ? new Date(a[byDateKey]) : new Date(0);
+      const bDate = b[byDateKey] ? new Date(b[byDateKey]) : new Date(0);
+      return sort === "latest" ? bDate - aDate : aDate - bDate;
+    });
+  };
+
+  // search
+  const filteredApi   = apiPosts.filter(p => match(p));
+  const filteredLocal = localPosts.filter(p => match(p, p.author || ""));
+  const displayLocal  = sortPosts(filteredLocal, "date");
+  const displayApi    = sortPosts(filteredApi, "date");
 
   return (
     <div className="all-posts-search-section">
       <div className="heading-logout-section">
         {user ? (
           <>
-            <h3>{MESSAGES.WELCOME_MSG}, {user?.name ?? ''}!</h3>
-            <button className="logout" onClick={handleLogout}>Logout</button>
+            <h3>{MESSAGES.WELCOME_MSG}, {user?.name}!</h3>
+            <div>
+              <button className="logout" onClick={handleLogout}>Logout</button>
+            </div>
           </>
         ) : (
-          <p>{MESSAGES.LOGIN_TO_ACCESS} click here: <Link to="/login">Login</Link></p>
+          <p>{MESSAGES.LOGIN_TO_ACCESS} <Link to="/login">Login</Link></p>
         )}
       </div>
       <div className="all-post-creation">
         <h1 className="all-posts-heading">All Posts</h1>
-        <Link className="create-new-post" to={`/post/new`}>Create Post</Link>
+        {user && <Link className="create-new-post" to={"/post/new"}>Create Post</Link>}
       </div>
-      
-      <input className="search-posts" name="search posts" placeholder="Search posts..." value={search} onChange={(e) => setSearch(e.target.value)} />
+
+      <div className="search-sort-container">
+        <input className="search-posts" placeholder="Search posts..." value={search} onChange={(e) => setSearch(e.target.value)} />
+        <select value={sort} onChange={(e) => setSort(e.target.value)}>
+          <option value="latest">Latest</option>
+          <option value="oldest">Oldest</option>
+        </select>
+      </div>
       <div className="all-posts">
-        {/* <h3>Explore Blogs</h3> */}
-        {storedPosts.slice().reverse().map(post => (
+        {/* <h3 className="section-heading">My Blogs</h3> */}
+        {displayLocal.length === 0 && <p className="muted">No personal posts yet.</p>}
+        {displayLocal.map(post => (
           <div key={post.id} className="post-details">
             <div className="edit-delete-posts-section">
-              <button className="editPost" onClick={() => navigate(`/post/edit/${post.id}`)}><img src="../src/assets/icons-edit-24.png" /></button>
-              <button className="deletePost" onClick={() => handleDeletePost(post.id)}><img src="../src/assets/icons-delete-24.png" /></button>
+              {console.log(post, user)}
+              {user.email === post.authorEmail && (
+                <>
+                  <button className="editPost" onClick={() => navigate(`/post/edit/${post.id}`)}><img src="../src/assets/icons-edit-24.png" /></button>
+                  <button className="deletePost" onClick={() => handleDeleteLocal(post.id)}><img src="../src/assets/icons-delete-24.png" /></button>
+                </>
+              )}
             </div>
             <h2 className="post-title">{post.title}</h2>
             <p className="post-description">{post.body}</p>
-            <Link className="post-read-more-link" to={`/post/${post.id}`}>Read More</Link>
+            <small>By <Link to={`/post/author/${post.author}`}>{post.author}</Link> • {post.date ? new Date(post.date).toLocaleString() : ""}</small>
+            <div><Link to={`/post/${post.id}`}>Read More</Link></div>
           </div>
         ))}
-        {/* <h3>My Blogs</h3> */}
-        {filteredPosts.slice().reverse().map(post => (
+        {/* <h3 className="section-heading">Community Blogs</h3> */}
+        {displayApi.length === 0 && <p className="muted">No community posts available.</p>}
+        {displayApi.map(post => (
           <div key={post.id} className="post-details">
-            {/* <div className="edit-delete-posts-section">
-              <button className="editPost" onClick={() => navigate(`/post/edit/${post.id}`)}><img src="../src/assets/icons-edit-24.png" /></button>
-              <button className="deletePost" onClick={() => handleDeletePost(post.id)}><img src="../src/assets/icons-delete-24.png" /></button>
-            </div> */}
             <h2 className="post-title">{post.title}</h2>
             <p className="post-description">{post.body}</p>
-            <Link className="post-read-more-link" to={`/post/${post.id}`}>Read More</Link>
+            <small>By API Author #{post.userId}</small>
+            <div><Link to={`/post/${post.id}`}>Read More</Link></div>
           </div>
-        ))} 
+        ))}
       </div>
-      </div>
+    </div>
   );
 }
